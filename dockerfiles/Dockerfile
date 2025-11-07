@@ -55,7 +55,12 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/
     flex \
     bison \
     libyaml-dev \
+    lua5.1 \
+    liblua5.1-dev \
+    luarocks \
     && apt-get satisfy -y cmake "cmake (<< 4.0)" \
+    && luarocks install luasocket \
+    && luarocks install lua-cjson \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -201,6 +206,8 @@ COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 
 # Finally the binaries as most likely to change
 COPY --from=builder /fluent-bit /fluent-bit
+COPY --from=builder /usr/local/share/lua/5.1/ /usr/local/share/lua/5.1/
+COPY --from=builder /usr/local/lib/lua/5.1/ /usr/local/lib/lua/5.1/ 
 
 EXPOSE 2020
 
@@ -263,6 +270,8 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/
 
 RUN rm -f /usr/bin/qemu-*-static
 COPY --from=builder /fluent-bit /fluent-bit
+COPY --from=builder /usr/local/share/lua/5.1 /usr/local/share/lua/5.1/
+COPY --from=builder /usr/local/lib/lua/5.1/ /usr/local/lib/lua/5.1/ 
 
 EXPOSE 2020
 

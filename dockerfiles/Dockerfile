@@ -58,11 +58,14 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/
     lua5.1 \
     liblua5.1-dev \
     luarocks \
+    lua-sql-postgres \
     && apt-get satisfy -y cmake "cmake (<< 4.0)" \
     && luarocks install luasocket \
     && luarocks install lua-cjson \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN  luarocks PGSQL_INCDIR=/usr/include/postgresql/ install luasql-postgres
 
 # Must be run from root of repo
 WORKDIR /src/fluent-bit/

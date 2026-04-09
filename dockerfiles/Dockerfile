@@ -62,6 +62,8 @@ RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/
     && apt-get satisfy -y cmake "cmake (<< 4.0)" \
     && luarocks install luasocket \
     && luarocks install lua-cjson \
+    && luarocks install luasec \
+    && luarocks install luaossl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
